@@ -35,6 +35,7 @@ export default function TransactionList() {
             {transactions.map(transaction => 
                 <TransactionCard
                 key={transaction.id}
+                id={transaction.id}
                 item_name={transaction.item_name}
                 amount={transaction.amount}
                 date={transaction.date}

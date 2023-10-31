@@ -14,7 +14,6 @@ export default function AddTransaction() {
     });
 
     const postTransaction = () => {
-        console.log(transaction)
         fetch(`${apiUrl}/transactions`, {
             method: "POST",
             body: JSON.stringify(transaction),
@@ -22,8 +21,9 @@ export default function AddTransaction() {
                 "Content-Type": "application/json",
             },
         })
-        .then(() => {
-            navigate("/transactions");
+        .then((res) => res.json())
+        .then((newTransaction) => {
+            navigate(`/transactions/${newTransaction.id}`);
             setTransaction({
                 date: "",
                 item_name: "",

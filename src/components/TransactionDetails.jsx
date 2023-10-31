@@ -1,7 +1,26 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 export default function TransactionDetails() {
+    const [transaction, setTransaction] = useState({});
+    const { id } = useParams();
+
+    useEffect(() => {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        fetch(`${apiUrl}/transactions/${id}`)
+            .then((res) => res.json())
+            .then((data) => setTransaction(data))
+            .catch((err) => console.error("Error fetching data: ", err));
+    }, [id]);
     return (
         <div>
-            This is the Transaction Details
+            <h1>Transaction Details</h1>
+            <p>ID: {transaction.id}</p>
+            <p>Item Name: {transaction.item_name}</p>
+            <p>Amount: {transaction.amount}</p>
+            <p>Date: {transaction.date}</p>
+            <p>From: {transaction.from}</p>
+            <p>Category: {transaction.category}</p>
         </div>
     )
 }
