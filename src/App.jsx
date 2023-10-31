@@ -5,6 +5,8 @@ import Navbar from './components/Navbar.jsx';
 import List from "./pages/List.jsx";
 import Details from "./pages/Details.jsx";
 import AddInfo from "./pages/AddInfo.jsx"
+import Home from "./pages/Home.jsx"
+import EditTransaction from "./components/EditTransaction.jsx";
 
 function App() {
 
@@ -13,9 +15,11 @@ function App() {
       <div>
         <Navbar />
         <Routes>
-          <Route path="/" element={<List />}/>
-          <Route path="/details/:id" element={<Details />}/>
-          <Route path="/add" element={<AddInfo />}/>
+          <Route path="/" element={<Home />}/>
+          <Route path="/transactions" element={<List />}/>
+          <Route path="/transactions/new" element={<AddInfo />}/>
+          <Route path="/transactions/:id" element={<Details />}/>
+          <Route path="/transactions/:id/edit" element={<EditTransaction />}/>
         </Routes>
       </div>
     </Router>

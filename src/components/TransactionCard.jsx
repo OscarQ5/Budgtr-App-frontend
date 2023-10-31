@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 
-export default function TransactionCard() {
+export default function TransactionCard({ id, item_name, amount, date }) {
     return (
-        <h1>Transaction Card</h1>
+        <div>
+            {date}
+            <Link to={`/transactions/${id}`}>{item_name}</Link>
+            {amount}
+        </div>
     )
 }
