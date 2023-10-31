@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar.jsx';
@@ -9,17 +9,50 @@ import Home from "./pages/Home.jsx"
 import EditTransaction from "./components/EditTransaction.jsx";
 
 function App() {
+  const [bankTotal, setBankTotal] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+  function calculateBankTotal() {
+    let total = 0;
+
+    for (const transaction of transactions) {
+      if (transaction.category === 'Income' || transaction.category === 'Savings') {
+        total += transaction.amount;
+      } else {
+        total -= transaction.amount;
+      }
+    }
+
+    return total;
+  };
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    fetch(`${apiUrl}/transactions`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTransactions(data);
+      })
+      .catch((error) => console.error('Error fetching transactions: ', error));
+  }, []);
+
+  useEffect(() => {
+    if (transactions.length > 0) {
+      const total = calculateBankTotal();
+      setBankTotal(total);
+    }
+  }, [transactions]);
 
   return (
     <Router>
       <div>
-        <Navbar />
+        <Navbar bankTotal={bankTotal} />
         <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="/transactions" element={<List />}/>
-          <Route path="/transactions/new" element={<AddInfo />}/>
-          <Route path="/transactions/:id" element={<Details />}/>
-          <Route path="/transactions/:id/edit" element={<EditTransaction />}/>
+          <Route path="/" element={<Home />} />
+          <Route path="/transactions" element={<List />} />
+          <Route path="/transactions/new" element={<AddInfo />} />
+          <Route path="/transactions/:id" element={<Details />} />
+          <Route path="/transactions/:id/edit" element={<EditTransaction />} />
         </Routes>
       </div>
     </Router>

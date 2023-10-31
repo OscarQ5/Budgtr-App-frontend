@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function TransactionDetails() {
     const [transaction, setTransaction] = useState({});
     const { id } = useParams();
+    const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        const apiUrl = import.meta.env.VITE_API_URL;
         fetch(`${apiUrl}/transactions/${id}`)
             .then((res) => res.json())
             .then((data) => setTransaction(data))
             .catch((err) => console.error("Error fetching data: ", err));
     }, [id]);
+
+    const handleDelete = () => {
+        fetch(`${apiUrl}/transactions/${id}`, {
+            method: "DELETE",
+        })
+        .then(() => navigate("/transactions"))
+        .catch((err) => console.error("Error deleting data: ", err));
+    };
+
     return (
         <div>
             <h1>Transaction Details</h1>
@@ -24,6 +34,7 @@ export default function TransactionDetails() {
             <Link to={`/transactions/${id}/edit`}>
                 <button>Edit</button>
             </Link>
+            <button onClick={handleDelete}>Delete</button>
         </div>
     )
 }
