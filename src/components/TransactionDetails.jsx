@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function TransactionDetails() {
     const [transaction, setTransaction] = useState({});
@@ -21,6 +21,9 @@ export default function TransactionDetails() {
             <p>Date: {transaction.date}</p>
             <p>From: {transaction.from}</p>
             <p>Category: {transaction.category}</p>
+            <Link to={`/transactions/${id}/edit`}>
+                <button>Edit</button>
+            </Link>
         </div>
     )
 }
