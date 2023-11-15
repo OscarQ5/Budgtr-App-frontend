@@ -12,7 +12,7 @@ function App() {
   const [bankTotal, setBankTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
 
-  function calculateBankTotal() {
+  function calculateBankTotal(transactions) {
     let total = 0;
 
     for (const transaction of transactions) {
@@ -32,15 +32,10 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setTransactions(data);
+        const total = calculateBankTotal(data);
+        setBankTotal(total);
       })
       .catch((error) => console.error('Error fetching transactions: ', error));
-  }, []);
-
-  useEffect(() => {
-    if (transactions.length > 0) {
-      const total = calculateBankTotal();
-      setBankTotal(total);
-    }
   }, [transactions]);
 
   return (
